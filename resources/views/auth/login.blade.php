@@ -5,8 +5,10 @@
         <div class="font-bold text-xl pb-2">
             ログイン
         </div>
-        
+
         <div class="p-6">
+            <x-auth-session-status class="mb-4" :status="session('status')" />
+            
             <!-- Email Address -->
             <div>
                 <x-input-label for="email" value="メールアドレス" />
