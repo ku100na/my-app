@@ -28,7 +28,7 @@ class AuthenticatedSessionController extends Controller
 
         $request->session()->regenerate();
 
-        return redirect()->intended('plans');
+        return redirect()->intended('travel-plans');
     }
 
     /**

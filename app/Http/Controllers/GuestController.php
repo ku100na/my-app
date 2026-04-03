@@ -10,7 +10,7 @@ class GuestController extends Controller
     public function index() {
         // ログイン済みの場合はプラン一覧画面に遷移
         if (Auth::check()) {
-            return redirect('/plans');
+            return redirect('/travel_plans');
         }
         return view('welcome');
         

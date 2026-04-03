@@ -9,22 +9,22 @@
         
         @vite(['resources/css/app.css', 'resources/js/app.js'])
     </head>
-    <body class="bg-cream">
-        <!-- Header -->
-        <header class="bg-blue">
-            <div class="container">
-                <h1 class="text-xl font-bold">Travel Planner</h1>
-            </div>
-        </header>
-        
-        <!-- Main Content -->
-        <main class="container">
-            {{ $slot }}
-        </main>
+    <body>
+    <!-- ヘッダー -->
+    <header">
+        @include('layouts.navigation')
+    </header>
 
-        <!-- Footer -->
-        <footer class="bg-blue mx-auto">
-            <div>© 2026 Travel Planner</div>
-        </footer>
-    </body>
+    <!-- Breeze の slot -->
+    <div class="min-h-screen flex flex-col items-center p-6 bg-cream text-primary01">
+        <div class="w-auto">
+            {{ $slot }}
+        </div>
+    </div>
+
+    <!-- フッター -->
+    <footer class="bg-primary01 text-primary02 p-6 text-center w-full">
+        <p>© 2026 Travel Planner</p>
+    </footer>
+</body>
 </html>
