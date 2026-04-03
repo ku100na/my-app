@@ -44,7 +44,7 @@
                 <x-input-error :messages="$errors->get('password_confirmation')" class="mt-2" />
             </div>
 
-            <x-primary-button class="mt-4">
+            <x-primary-button type="submit" class="mt-4">
                    登録
             </x-primary-button>
 

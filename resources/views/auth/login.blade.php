@@ -34,7 +34,7 @@
 
             <!-- ログインボタン -->
             <div class="mt-4 text-start">
-                <x-primary-button>
+                <x-primary-button type="submit">
                     ログイン
                 </x-primary-button>
             </div>

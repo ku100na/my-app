@@ -36,7 +36,7 @@
             </div>
 
             <div class="mt-4">
-                <x-primary-button>
+                <x-primary-button type="submit">
                     更新する
                 </x-primary-button>
             </div>
