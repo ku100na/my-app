@@ -11,7 +11,7 @@ $current = request()->routeIs('travel_plans.index');
     </x-blue-button>
 
 @else
-    <x-white-button :type="$type" {{ $attributes }}>
+    <x-white-button :href="$href" {{ $attributes }}>
         {{ $slot }}
     </x-white-button>
 @endif
