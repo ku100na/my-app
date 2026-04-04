@@ -12,7 +12,11 @@
     <body>
     <!-- ヘッダー -->
     <header>
-        @include('layouts.navigation')
+        @auth
+            @include('layouts.navigation')
+        @else
+            @include('components.guest-header')
+        @endauth
     </header>
 
     <!-- Breeze の slot -->

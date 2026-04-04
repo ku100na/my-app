@@ -14,10 +14,10 @@
 
                 <!-- Navigation Links -->
                 <div class="hidden space-x-8 sm:-my-px sm:ms-10 sm:flex items-center">
-                    <x-nav-link :href="route('travel_plans.index')" :active="request()->routeIs('travel-plans.index')">
+                    <x-nav-link :href="route('travel_plans.index')">
                         プラン一覧
                     </x-nav-link>
-                    <x-nav-link :href="route('travel_plans.index')" :active="request()->routeIs('travel-plans.index')">
+                    <x-nav-link :href="route('travel_plans.index')">
                         プラン作成
                     </x-nav-link>
                 </div>

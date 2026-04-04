@@ -11,15 +11,13 @@
     </head>
     <body>
     <!-- ヘッダー -->
-    <header class="bg-primary01 text-primary02 p-6 w-full">
-        <h1 class="text-2xl font-bold text-left">Travel Planner</h1>
+    <header">
+        @include('components.guest-header')
     </header>
 
     <!-- Breeze の slot -->
-    <div class="min-h-screen flex flex-col items-center p-6 bg-cream text-primary01">
-        <div class="w-auto bg-base shadow-lg rounded-lg p-8">
-            {{ $slot }}
-        </div>
+    <div class="min-h-screen flex flex-col items-center bg-cream text-primary01">
+        {{ $slot }}
     </div>
 
     <!-- フッター -->
