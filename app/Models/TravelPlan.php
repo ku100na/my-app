@@ -16,5 +16,6 @@ class TravelPlan extends Model
     'overview',
     'is_public',
     'photo_url',
+    'status',
     ];
 }
