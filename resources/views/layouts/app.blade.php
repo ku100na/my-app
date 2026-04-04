@@ -11,13 +11,13 @@
     </head>
     <body>
     <!-- ヘッダー -->
-    <header">
+    <header>
         @include('layouts.navigation')
     </header>
 
     <!-- Breeze の slot -->
     <div class="min-h-screen flex flex-col items-center p-6 bg-cream text-primary01">
-        <div class="w-auto">
+        <div class="w-full max-w-7xl sm:px-6 lg:px-8">
             {{ $slot }}
         </div>
     </div>
@@ -26,5 +26,5 @@
     <footer class="bg-primary01 text-primary02 p-6 text-center w-full">
         <p>© 2026 Travel Planner</p>
     </footer>
-</body>
+    </body>
 </html>

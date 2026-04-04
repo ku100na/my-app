@@ -73,10 +73,10 @@
     <!-- Responsive Navigation Menu -->
     <div :class="{'block': open, 'hidden': ! open}" class="hidden sm:hidden">
         <div class="pt-2 pb-3 space-y-1 pl-4 space-x-4 border-t border-primary03">
-            <x-nav-link :href="route('travel_plans.index')" :active="request()->routeIs('travel-plans.index')">
+            <x-nav-link :href="route('travel_plans.index')" :active="(request()->routeIs('travel_plans.index'))? true : false">
                 プラン一覧
             </x-nav-link>
-            <x-nav-link :href="route('travel_plans.index')" :active="request()->routeIs('travel-plans.index')">
+            <x-nav-link :href="route('travel_plans.index')" :active="(request()->routeIs('travel_plans.index'))? true : false">
                 プラン作成
             </x-nav-link>
         </div>

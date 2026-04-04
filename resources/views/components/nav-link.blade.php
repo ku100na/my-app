@@ -1,12 +1,14 @@
-@props(['active', 
-    'href' => null,
-    'type' => 'button'
-    ])
+@props(['href'])
 
-@if($active)
-    <x-primary-button :href="$href" {{ $attributes }}>
+@php
+$current = request()->routeIs('travel_plans.index');
+@endphp
+
+
+@if($current)
+    <x-blue-button :href="$href" {{ $attributes }}>
         {{ $slot }}
-    </x-primary-button>
+    </x-blue-button>
 
 @else
     <x-white-button :type="$type" {{ $attributes }}>
