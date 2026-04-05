@@ -1,20 +1,24 @@
 <x-app-layout>
     <div>
-        画像
+        @if($user->icom_image)
+            <img src="{{ asset('' . $user->icon_image) }}">
+        @endif
     </div>
     <div>
         <div>
-            名前: 山田太郎
+            名前: {{ $user->name }}
         </div>
         <div>
-            自己紹介: 旅行が大好きです
+            @if($user->bio)
+                自己紹介: {{ $user->bio }}
+            @endif
         </div>
         <div>
-            メール: メールアドレス（非公開）
+            メール: {{ $user->email }}（非公開）
         </div>
     </div>
     <div>
-        <x-primary-button>
+        <x-primary-button href="{{ route('profile.edit') }}">
             プロフィール編集
         </x-primary-button>
     </div>
