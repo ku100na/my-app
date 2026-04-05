@@ -1,12 +1,10 @@
 <x-app-layout>
-    <div class="flex justify-between">
-        <div class="font-bold text-2xl pb-2">
-            プラン一覧
+    <x-slot name="title">
+        <div class="flex justify-between">
+            <div>プラン一覧</div>
+            <div class="font-normal">検索</div>
         </div>
-        <div>
-            検索
-        </div>
-    </div>
+    </x-slot>
 
     @auth
     <div class="flex justify-center">

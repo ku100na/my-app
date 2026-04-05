@@ -20,7 +20,12 @@
     </header>
 
     <!-- Breeze の slot -->
-    <div class="min-h-screen flex flex-col items-center p-6 bg-cream text-primary01">
+    <div class="min-h-screen flex flex-col p-6 bg-cream text-primary01">
+        @isset($title)
+            <div class="font-bold text-2xl pb-2">
+                {{ $title }}
+            </div>
+        @endisset
         <div class="w-full max-w-7xl sm:px-6 lg:px-8">
             {{ $slot }}
         </div>
