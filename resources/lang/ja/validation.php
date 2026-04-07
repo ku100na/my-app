@@ -10,6 +10,7 @@ return [
     ],
     'max'                  => [
         'string' => ':attributeは:max文字以内で入力してください。',
+        'file' => ':attributeは:maxKB以内にしてください。',
     ],
     'password' => [
         'letters' => ':attributeには少なくとも1文字の英字を含めてください。',
@@ -18,10 +19,14 @@ return [
         'symbols' => ':attributeには少なくとも1つの記号（!@#$%^&*など）を含めてください。',
         'uncompromised' => ':attributeは過去に流出したパスワードです。別のパスワードを使用してください。',
     ],
+    'image' => ':attributeは画像ファイル（jpg, png など）を選択してください。',
 
+    'current_password' => 'パスワードが正しくありません。',
+    
     'attributes' => [
         'name'     => '名前',
         'email'    => 'メールアドレス',
-        'password' => 'パスワード'      
+        'password' => 'パスワード',
+        'icon_image' => 'プロフィール画像', 
     ],
 ];
