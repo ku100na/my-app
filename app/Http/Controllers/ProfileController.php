@@ -8,6 +8,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Redirect;
 use Illuminate\View\View;
+use Intervention\Image\Facades\Image;
 
 
 class ProfileController extends Controller
@@ -39,8 +40,14 @@ class ProfileController extends Controller
 
         if($request->hasFile('icon_image')) {
             $file = $request->file('icon_image');
-            $path = $file->store('icons', 'public');
-            $user->icon_image = basename($path);
+
+            $image = Image::make($file)->fit(200, 200);
+
+            $filename = uniqid() . '.' . $file->getClientOriginalExtension();
+            $savePath = storage_path('app/public/icons/' . $filename);
+            $image->save($savePath);
+
+            $user->icon_image = $filename;
         }
 
         if ($user->isDirty('email')) {
