@@ -1,7 +1,10 @@
-@props(['href'])
+@props([
+    'href',
+    'activeRoute' => null,
+])
 
 @php
-$current = request()->routeIs('travel_plans.index');
+$current = $activeRoute ? request()->routeIs($activeRoute) : false;
 @endphp
 
 

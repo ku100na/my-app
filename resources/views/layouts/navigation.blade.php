@@ -14,10 +14,10 @@
 
                 <!-- Navigation Links -->
                 <div class="hidden space-x-8 sm:-my-px sm:ms-10 sm:flex items-center">
-                    <x-nav-link :href="route('travel_plans.index')">
+                    <x-nav-link :href="route('travel_plans.index')" active-route="travel_plans.index">
                         プラン一覧
                     </x-nav-link>
-                    <x-nav-link :href="route('travel_plans.index')">
+                    <x-nav-link :href="route('travel_plans.create')" active-route="travel_plans.create">
                         プラン作成
                     </x-nav-link>
                 </div>
@@ -73,10 +73,10 @@
     <!-- Responsive Navigation Menu -->
     <div :class="{'block': open, 'hidden': ! open}" class="hidden sm:hidden">
         <div class="pt-2 pb-3 space-y-1 pl-4 space-x-4 border-t border-primary03">
-            <x-nav-link :href="route('travel_plans.index')" :active="(request()->routeIs('travel_plans.index'))? true : false">
+            <x-nav-link :href="route('travel_plans.index')"  active-route="travel_plans.index">
                 プラン一覧
             </x-nav-link>
-            <x-nav-link :href="route('travel_plans.index')" :active="(request()->routeIs('travel_plans.index'))? true : false">
+            <x-nav-link :href="route('travel_plans.create')" active-route="travel_plans.create">
                 プラン作成
             </x-nav-link>
         </div>

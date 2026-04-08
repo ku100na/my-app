@@ -19,6 +19,10 @@ Route::middleware('auth')->group(function () {
     Route::post('/profile', [ProfileController::class, 'update'])->name('profile.update');
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
+    Route::get('/travel-plans/create',function() {
+        return view('travel_plans.create');
+    })->name('travel_plans.create');
+    Route::post('/travel-plans', [TravelPlanController::class, 'store'])->name('travel_plans.store');
 });
 
 require __DIR__.'/auth.php';

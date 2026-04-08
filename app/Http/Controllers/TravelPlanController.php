@@ -4,6 +4,8 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\TravelPlan;
+use Illuminate\Auth\Events\Registered;
+use Symfony\Component\HttpFoundation\RedirectResponse;
 
 class TravelPlanController extends Controller
 {
@@ -30,4 +32,29 @@ class TravelPlanController extends Controller
         return view ('travel_plans.index', [
             'plans' => $plans]);
         }
+    
+    public function store(Request $request): RedirectResponse {
+        $travelPlan = TravelPlan::create([
+            'user_id' => $request->id,
+            'title' => $request->title,
+            'country' => $request->country,
+            'city' => $request->city,
+            'start_date' => $request->start_date,
+            'end_date' => $request->end_date,
+            'overview' => $request->overview,
+            'is_public' => $request->is_public,
+            'photo_url' => $request->photo_url,
+            'status' => $request->status
+        ]);
+        event(new Registered($travelPlan));
+
+        // Intervention Imageでリサイズ
+        $image = Image::make($file)
+            ->resize(400, 300, function ($constraint) {
+                $constraint->aspectRatio(); // 縦横比を維持
+                $constraint->upsize();      // 元より大きくならない
+            });
+
+        return redirect('travel-plans');
     }
+}

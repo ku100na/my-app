@@ -89,10 +89,12 @@
             {{ $plans->appends(request()->query())->links()}}
         </div>
 
+        @auth
         <div class="mt-8">
-            <x-primary-button>
+            <x-primary-button href="{{ route('travel_plans.create') }}">
                 ＋作成
             </x-primary-button>
         </div>
+        @endauth
     </div>
 </x-app-layout>
