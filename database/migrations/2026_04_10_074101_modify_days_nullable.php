@@ -11,12 +11,9 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('trip_records', function (Blueprint $table) {
-            $table->id();
-            $table->foreign('travel_plan_id')->constrained()->cascadeOnDelete();
-            $table->text('review')->nullable();
-            $table->integer('cost')->nullable();
-            $table->timestamps();
+        Schema::table('days', function (Blueprint $table) {
+            $table->string('title')->nullable()->change();
+            $table->string('day_number')->nullable()->change();
         });
     }
 
@@ -25,6 +22,8 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('trip_records');
+        Schema::table('days', function (Blueprint $table) {
+            $table->string('title')->nullable(false)->change();
+        });
     }
 };

@@ -11,7 +11,7 @@ Route::get('/dashboard', function () {
     return view('dashboard');
 })->middleware(['auth', 'verified'])->name('dashboard');
 
-Route::get('/travel-plans', [TravelPlanController::class, 'index'])->name('travel_plans.index');
+Route::get('/travel-plans', [TravelPlanController::class, 'index'])->name('travel-plans.index');
 
 Route::middleware('auth')->group(function () {
     Route::get('/profile', [ProfileController::class, 'show'])->name('profile.show');
@@ -21,8 +21,9 @@ Route::middleware('auth')->group(function () {
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
     Route::get('/travel-plans/create',function() {
         return view('travel_plans.create');
-    })->name('travel_plans.create');
-    Route::post('/travel-plans', [TravelPlanController::class, 'store'])->name('travel_plans.store');
+    })->name('travel-plans.create');
+    Route::post('/travel-plans', [TravelPlanController::class, 'store'])->name('travel-plans.store');
+    Route::get('/travel-plans/{travelPlan}', [TravelPlanController::class, 'show'])->name('travel-plans.show');
 });
 
 require __DIR__.'/auth.php';

@@ -1,3 +1,10 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+
+
+input:-webkit-autofill {
+    @apply bg-base;
+    transition: background-color 9999s ease-out;
+}
