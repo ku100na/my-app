@@ -7,10 +7,12 @@ return [
     'confirmed'=> ':attributeと:attribute確認が一致しません。',
     'min'      => [
         'string' => ':attribute は:min文字以上で入力してください。',
+        'numeric' => ':attributeは:min以内で入力してください。',
     ],
     'max'                  => [
         'string' => ':attributeは:max文字以内で入力してください。',
         'file' => ':attributeは:maxKB以内にしてください。',
+        'numeric' => ':attributeは:max以内で入力してください。',
     ],
     'password' => [
         'letters' => ':attributeには少なくとも1文字の英字を含めてください。',
@@ -22,11 +24,25 @@ return [
     'image' => ':attributeは画像ファイル（jpg, png など）を選択してください。',
 
     'current_password' => 'パスワードが正しくありません。',
-    
+
+    'after_or_equal' => '終了日は開始日以降にしてください',
+
     'attributes' => [
         'name'     => '名前',
         'email'    => 'メールアドレス',
         'password' => 'パスワード',
         'icon_image' => 'プロフィール画像', 
+        'title' => 'プラン名',
+        'country' => '国',
+        'city' => '都市',
+        'start_date' => '開始日',
+        'end_date' => '終了日',
+        'overview' => '概要',
+        'photo_url' => '写真',
+        'days.*.title' => '日程タイトル',
+        'days.*.spots.*.name' => 'スポット名',
+        'days.*.spots.*.hours' => '時間',
+        'days.*.spots.*.minutes' => '分',
+        'days.*.spots.*.review' => 'メモ',
     ],
 ];

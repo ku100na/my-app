@@ -18,4 +18,12 @@ class TravelPlan extends Model
     'photo_url',
     'status',
     ];
+
+    public function travelRecord() {
+        return $this->hasOne(TravelRecord::class);
+    }
+
+    public function days() {
+        return $this->hasMany(Day::class);
+    }
 }

@@ -8,14 +8,14 @@
 
     @auth
     <div class="flex justify-center">
-        <a href="{{ route('travel_plans.index',['type' => 'mine']) }}">
+        <a href="{{ route('travel-plans.index',['type' => 'mine']) }}">
             @if(request('type') === 'mine')
                 <x-blue-button>自分のプラン</x-blue-button>
             @else
                 <x-white-button>自分のプラン</x-white-button>
             @endif
         </a>
-        <a href="{{ route('travel_plans.index',['type' => 'all']) }}" class="ml-4">
+        <a href="{{ route('travel-plans.index',['type' => 'all']) }}" class="ml-4">
             @if(request('type') === 'mine')
                 <x-white-button>みんなのプラン</x-white-button>
             @else
@@ -89,10 +89,12 @@
             {{ $plans->appends(request()->query())->links()}}
         </div>
 
+        @auth
         <div class="mt-8">
-            <x-primary-button>
+            <x-primary-button href="{{ route('travel-plans.create') }}">
                 ＋作成
             </x-primary-button>
         </div>
+        @endauth
     </div>
 </x-app-layout>

@@ -46,6 +46,6 @@ class RegisteredUserController extends Controller
 
         Auth::login($user);
 
-        return redirect('/plans');
+        return redirect('/travel-plans');
     }
 }
