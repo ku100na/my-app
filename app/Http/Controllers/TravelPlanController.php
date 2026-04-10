@@ -10,6 +10,7 @@ use Illuminate\Auth\Events\Registered;
 use Illuminate\Support\Facades\Auth;
 use Intervention\Image\Facades\Image;
 use Symfony\Component\HttpFoundation\RedirectResponse;
+use Illuminate\View\View;
 
 class TravelPlanController extends Controller
 {
@@ -96,7 +97,17 @@ class TravelPlanController extends Controller
             'review' => $request->review,
             'cost' => $request->cost,
         ]);
-        // return redirect()->route('travel-plans.show', $travelPlan->id)->with('success', 'プランを作成しました');
-        return redirect()->route('travel-plans.index');
+
+        return redirect()->route('travel-plans.show', $travelPlan->id)->with('success', 'プランを作成しました');
+    }
+
+    public function show(TravelPlan $travelPlan): View
+    {
+        $travelPlan->load([
+            'travelRecord',
+            'days.spots',
+        ]);
+
+        return view('travel_plans.show', compact('travelPlan'));
     }
 }

@@ -18,8 +18,12 @@ export default {
                 primary01: '#387CBD',
                 primary02: '#F4A45F',
                 primary03: '#ACD9D1',
+                primary04: {
+                    100: '#EAD6CB', 
+                    500: '#D29CB6',
+                },
                 cream: '#F2EEC9',
-                base: '#F5F5F5'
+                base: '#F5F5F5',
             },
         },
     },
