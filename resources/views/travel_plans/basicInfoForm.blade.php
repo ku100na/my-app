@@ -52,7 +52,7 @@
     
     <div>
         <x-input-label for="photo_url" value="写真" />
-        <x-text-input id="photo_url" name="photo_url" type="file" class="mt-1 block w-auto"/>
+        <x-text-input id="photo_url" name="photo_url" value="{{ old('photo_url', $travelPlan->photo_url ?? '') }}" type="file" class="mt-1 block w-auto"/>
         <img id="photo_preview" 
             src="{{ isset($travelPlan) && $travelPlan->photo_url 
                 ? asset('storage/photos/' . $travelPlan->photo_url) 

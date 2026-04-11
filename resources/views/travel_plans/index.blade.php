@@ -52,7 +52,7 @@
                             @endif
                         </td>
                         <td class="px-4 py-2"><x-primary-button href="{{ route('travel-plans.show', $plan->id) }}">詳細</x-primary-button></td>
-                        <td class="px-4 py-2"><x-primary-button>編集</x-primary-button></td>
+                        <td class="px-4 py-2"><x-primary-button href="{{ route('travel-plans.edit', $plan->id) }}">編集</x-primary-button></td>
                     </tr>
                     @endforeach
                 </tbody>
@@ -79,7 +79,7 @@
                     </div>
                     <div class="flex space-x-2 ml-4 mb-4">
                         <x-primary-button href="{{ route('travel-plans.show', $plan->id) }}">詳細</x-primary-button>
-                        <x-primary-button>編集</x-primary-button>
+                        <x-primary-button href="{{ route('travel-plans.edit', $plan->id) }}">編集</x-primary-button>
                     </div>
                 </div>
             @endforeach
