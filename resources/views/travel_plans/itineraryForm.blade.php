@@ -1,52 +1,6 @@
 <div>日程一覧</div>
 <div class="pl-4 space-y-4">
     <div id="plan-container" class="pl-2">
-        <div class="day" data-day="1" data-spot-index="0">
-            <label>Day 1：</label>
-            <x-text-input type="text" name="days[0][title]" placeholder="タイトル" value="{{ old('days.0.title') }}"/>
-            <x-white-button type="button" class="ml-2 remove-day">日程削除</x-white-button>
-            <x-input-error :messages="$errors->get('days.0.title')" class="mt-2" />
-            
-            <div class="spots">
-            <div class="spot">
-                <x-card class="bg-primary03 space-y-4 mb-1 relative">
-                    <x-white-button type="button" class="absolute top-2 right-2 remove-spot">スポット削除</x-white-button>
-                    <div>
-                        <div class="flex items-center space-x-2">
-                            <x-input-label value="スポット名" />
-                            <x-text-input type="text" name="days[0][spots][0][name]" value="{{ old('days.0.spots.0.name') }}"/>
-                        </div>
-                        <x-input-error :messages="$errors->get('days.0.spots.0.name')" class="mt-2" />
-                    </div>
-                    <div>
-                        <div class="flex items-center space-x-2">
-                            <x-input-label value="所要時間" />
-                            <select name="days[0][spots][0][hours]" class="border-primary03 border-4 focus:border-indigo-500 focus:ring-indigo-500 rounded-md shadow-sm">
-                                <option>0</option>
-                                <option>1</option>
-                                <option>2</option>
-                                <option>3</option>
-                                <option>4</option>
-                                <option>5</option>
-                                <option>6</option>
-                            </select>時間
-                            <x-text-input type="number" min="0" max="59" step="5" name="days[0][spots][0][minutes]" />分
-                        </div>
-                    <x-input-error :messages="$errors->get('days.0.spots.0.hours')" class="mt-2" />
-                    <x-input-error :messages="$errors->get('days.0.spots.0.minutes')" class="mt-2" />
-                    </div>
-                    <div>
-                        <div class="flex items-center space-x-2">
-                            <x-input-label value="メモ" class="w-8" />
-                            <x-textarea type="text" name="days[0][spots][0][review]" row="3" class="w-full"></x-textarea>               
-                        </div>
-                        <x-input-error :messages="$errors->get('days.0.spots.0.review')" class="mt-2" />
-                    </div>
-                </x-card>
-            </div>
-            </div>
-            <x-white-button class="ml-6 add-spot mb-8">＋スポット追加</x-white-button>
-        </div>
     </div>
     <x-white-button id="add-day">＋日程追加</x-white-button>
 
@@ -167,7 +121,8 @@
 
         const dayIndex = document.querySelectorAll('.day').length;
 
-        createDay({}, dayIndex);
+        const dayDiv = createDay({}, dayIndex);
+        createSpot(dayDiv, dayIndex, 0, {});
     });
 
 
@@ -249,12 +204,11 @@
     ========================= */
     window.addEventListener('load', () => {
 
-        const oldDays = @json(old('days', []) ?? []);
+        const oldDays = @json(old('days') ?? $days ?? []);
 
         const container = document.getElementById('plan-container');
 
         oldDays.forEach((day, i) => {
-            if(i === 0) return;
             const dayDiv = createDay(day, i);
             showErrors(dayDiv, i);
         });

@@ -2,12 +2,12 @@
 <div class="pl-4 space-y-4">
     <div>
         <x-input-label value="感想" />
-        <x-textarea type="text" name="review" class="w-full">{{ old('review', $travelPlan->review ?? '') }}</x-textarea>
+        <x-textarea type="text" name="review" class="w-full">{{ old('review', $travelPlan->travelRecord->review ?? '') }}</x-textarea>
     </div>
     <div>
         <x-input-label value="費用" />
         <x-text-input type="text" id="cost_display" class="text-right" />
-        <input type="hidden" name="cost" id="cost" value="{{ old('cost', $travelPlan->cost ?? '') }}"/>
+        <input type="hidden" name="cost" id="cost" value="{{ old('cost', $travelPlan->travelRecord->cost ?? '') }}"/>
     </div>
 </div>
 <script>

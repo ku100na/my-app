@@ -3,6 +3,12 @@
         プラン詳細
     </x-slot>
 
+    @if (session('success'))
+        <p class="mt-2 font-medium text-sm text-green-600">
+            {{ session('success') }}
+        </p>
+    @endif
+
     <div class="space-y-3">
         <x-card class="inline-block">
             <div class="inline-block font-bold text-xl text-base p-3 bg-primary04-500 rounded-md">{{ $travelPlan->title }}</div>
@@ -86,5 +92,5 @@
         </div>
     </div>
 
-    <x-primary-button class="mt-8">編集</x-primary-button>
+    <x-primary-button class="mt-8" href="{{ route('travel-plans.edit', $travelPlan->id) }}">編集</x-primary-button>
 </x-app-layout>

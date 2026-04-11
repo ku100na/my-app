@@ -98,7 +98,7 @@ class TravelPlanController extends Controller
             'cost' => $request->cost,
         ]);
 
-        return redirect()->route('travel-plans.show', $travelPlan->id)->with('success', 'プランを作成しました');
+        return redirect()->route('travel-plans.show', $travelPlan->id)->with('success', 'プランを作成しました。');
     }
 
     public function show(TravelPlan $travelPlan): View
@@ -109,5 +109,103 @@ class TravelPlanController extends Controller
         ]);
 
         return view('travel_plans.show', compact('travelPlan'));
+    }
+
+    public function edit(TravelPlan $travelPlan): View
+    {
+        $travelPlan->load([
+            'travelRecord',
+            'days.spots',
+        ]);
+
+        $days = $travelPlan->days->map(function ($day) {
+            return [
+                'title' => $day->title,
+                'spots' => $day->spots->map(function ($spot) {
+                    return [
+                        'name' => $spot->name,
+                        'hours' => $spot->hours,
+                        'minutes' => $spot->minutes,
+                        'review' => $spot->review,
+                    ];
+                })->values()
+            ];
+        })->values();
+
+        return view('travel_plans.edit', compact('travelPlan', 'days'));
+    }
+
+    public function update(TravelPlanRequest $request, TravelPlan $travelPlan)
+    {
+        // 親の更新
+        $travelPlan->update([
+            'title' => $request->title,
+            'country' => $request->country,
+            'city' => $request->city,
+            'start_date' => $request->start_date,
+            'end_date' => $request->end_date,
+            'is_public' => $request->boolean('is_public'),
+            'status' => $request->status,
+        ]);
+
+        // 画像
+        if ($request->hasFile('photo_url')) {
+            $file = $request->file('photo_url');
+
+            $image = Image::make($file)->resize(400, 300, function ($constraint) {
+                $constraint->aspectRatio();
+                $constraint->upsize();
+            });
+
+            $filename = uniqid() . '.' . $file->getClientOriginalExtension();
+            $savePath = storage_path('app/public/photos/' . $filename);
+            $image->save($savePath);
+
+            $travelPlan->update([
+                'photo_url' => $filename
+            ]);
+        }
+
+        // 子データ全削除
+        $travelPlan->days()->delete();
+
+        // 子データ再作成
+        $days = $request->input('days', []);
+        $dayNumber = 1;
+
+        foreach ($days as $day) {
+            if (empty($day['title'])) continue;
+            $dayModel = $travelPlan->days()->create([
+                'day_number' => $dayNumber,
+                'title' => $day['title'],
+            ]);
+
+            // spots
+            if (!empty($day['spots'])) {
+                foreach ($day['spots'] as $spot) {
+                    if (empty($spot['name'])) continue;
+
+                    $dayModel->spots()->create([
+                        'name' => $spot['name'] ?? null,
+                        'duration' => (($spot['hours'] ?? 0) * 60) + ($spot['minutes'] ?? 0),
+                        'review' => $spot['review'] ?? null,
+                    ]);
+                }
+            }
+            $dayNumber++;
+        }
+
+        // travel records更新・作成
+        $travelPlan->travelRecord()->updateOrCreate(
+            ['travel_plan_id' => $travelPlan->id],
+            [
+                'review' => $request->review,
+                'cost' => $request->cost,
+            ]
+        );
+
+        return redirect()
+            ->route('travel-plans.show', $travelPlan)
+            ->with('success', 'プランを更新しました。');
     }
 }
