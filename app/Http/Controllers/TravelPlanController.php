@@ -16,27 +16,77 @@ class TravelPlanController extends Controller
 {
     public function index(Request $request) {
 
-        // ログインユーザー取得
-        $user = auth()->user();
-        $activeTab = 'index';
+        $user = Auth::user();
+        
+        $query = TravelPlan::query();
 
         // 表示切替
         if ($request->query('type') === 'mine' && $user) {
             // 自分のプランを表示
-            $plans = TravelPlan::where('user_id', $user->id)
-                ->orderBy('start_date', 'desc')
-                ->paginate(2);
+            $query->where('user_id', $user->id);
         } else {
             // 自分以外のみんなのプランを表示
-            $plans = TravelPlan::where('is_public', true)
-                ->when($user, fn($q) => $q->where('user_id', '!=', $user->id))
-                ->orderBy('start_date', 'desc')
-                ->paginate(2);
+            $query->where('is_public', true);
         }
+
+        // キーワード検索
+        if ($request->keyword) {
+            $keywords = preg_split('/[\s　]+/u', trim($request->keyword));
+
+            $query->where(function ($q) use ($keywords) {
+                foreach ($keywords as $word) {
+                    $q->where(function ($q1) use ($word) {
+                        
+                        // TravelPlans
+                        $q1->where('title', 'like', "%{$word}%")
+                            ->orWhere('overview', 'like', "%{$word}%")
+
+                            // Days
+                            ->orWhereHas('days', function ($q2) use ($word) {
+                                $q2->where('title', 'like', "%{$word}%");
+                            })
+
+                            // Spots
+                            ->orWhereHas('days.spots', function ($q3) use ($word) {
+                                $q3->where('name', 'like', "%{$word}%");
+                            });
+                    });
+                }
+            });
+        }
+
+        // 国検索
+        if ($request->country) {
+            $query->where('country', 'like', "%{$request->country}%");
+        }
+
+        // 都市検索
+        if ($request->city) {
+            $query->where('city', 'like', "%{$request->city}%");
+        }
+
+        // 予算検索
+        if ($request->min_budget) {
+            $query->whereHas('travelRecord', function ($q) use ($request) {
+                $q->where('cost', '>=', $request->min_budget);
+            });
+        }
+
+        if ($request->max_budget) {
+            $query->whereHas('travelRecord', function ($q) use ($request) {
+                $q->where('cost', '<=', $request->max_budget);
+            });
+        }
+
+        // 並び
+        $plans = $query
+            ->orderBy('start_date','desc')
+            ->paginate(2)
+            ->withQueryString();
 
         return view ('travel_plans.index', [
             'plans' => $plans]);
-        }
+    }
     
     public function store(TravelPlanRequest $request): RedirectResponse {
         $travelPlan = TravelPlan::create([

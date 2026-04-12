@@ -33,7 +33,7 @@
                     <div class="text-gray-800">
                         @if($travelPlan->status === 'planned')
                             予定
-                        @elseif($$travelPlan->status === 'completed')
+                        @elseif($travelPlan->status === 'completed')
                             完了
                         @endif
                     </div>
