@@ -26,4 +26,12 @@ class TravelPlan extends Model
     public function days() {
         return $this->hasMany(Day::class);
     }
+
+    public function favoritedUsers() {
+        return $this->belongsToMany(User::class, 'favorites');
+    }
+
+    public function user() {
+        return $this->belongsTo(User::class);
+    }
 }
