@@ -26,5 +26,6 @@ Route::middleware('auth')->group(function () {
     Route::post('/travel-plans', [TravelPlanController::class, 'store'])->name('travel-plans.store');
     Route::get('/travel-plans/{travelPlan}/edit', [TravelPlanController::class, 'edit'])->name('travel-plans.edit');
     Route::put('/travel-plans/{travelPlan}', [TravelPlanController::class, 'update'])->name('travel-plans.update');
+    Route::post('/travel-plans/{travelPlan}/favorite', [TravelPlanController::class, 'toggleFavorite'])->name('travel-plans.toggleFavorite');
 });
 require __DIR__.'/auth.php';

@@ -41,4 +41,14 @@ class User extends Authenticatable implements MustVerifyEmail
     {
         $this->notify(new CustomVerifyEmail);
     }
+
+    public function favorites()
+    {
+        return $this->belongsToMany(TravelPlan::class, 'favorites');
+    }
+
+    public function travelPlans()
+    {
+        return $this->hasMany(TravelPlan::class);
+    }
 }

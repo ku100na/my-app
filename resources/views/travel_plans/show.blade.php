@@ -11,14 +11,28 @@
 
     <div class="space-y-3">
         <x-card class="inline-block">
-            <div class="inline-block font-bold text-xl text-base p-3 bg-primary04-500 rounded-md">{{ $travelPlan->title }}</div>
+            <div class="flex justify-between">
+                <div class="inline-block font-bold text-xl text-base p-3 bg-primary04-500 rounded-md">{{ $travelPlan->title }}</div>
+                <form method="POST" action="{{ route('travel-plans.toggleFavorite', $travelPlan) }}">
+                @csrf
+                    @auth
+                        <button type="submit">
+                            @if($user->favorites->contains('id', $travelPlan->id))
+                                <ion-icon name="heart" class="text-red-500 text-2xl"></ion-icon>
+                            @else
+                                <ion-icon name="heart-outline" class="text-2xl"></ion-icon>
+                            @endif
+                        </button>
+                    @endauth
+                </form>
+            </div>
 
             <div class="lg:flex lg:space-x-8">
-                <img 
-                    src="{{ $travelPlan->photo_url ? asset('storage/photos/' . $travelPlan->photo_url) : asset('images/default_photo.png') }}"
-                    alt="旅行写真"
-                    class="mt-1 block max-w-md w-full h-auto"
-                >
+                    <img 
+                        src="{{ $travelPlan->photo_url ? asset('storage/photos/' . $travelPlan->photo_url) : asset('images/default_photo.png') }}"
+                        alt="旅行写真"
+                        class="mt-1 block max-w-md w-full h-auto"
+                    >
                 <div class="grid grid-cols-[100px_1fr] gap-y-2 mt-4">
                     <div class="text-primary04-500 font-bold">旅行先</div>
                     <div class="text-gray-800">

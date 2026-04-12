@@ -17,6 +17,10 @@ class TravelPlanController extends Controller
     public function index(Request $request) {
 
         $user = Auth::user();
+
+        if ($user) {
+            $user->load('favorites');
+        }
         
         $query = TravelPlan::query();
 
@@ -78,14 +82,21 @@ class TravelPlanController extends Controller
             });
         }
 
+        // お気に入り
+        if ($request->favorited && $user) {
+            $query->whereHas('favoritedUsers', function ($q) use ($user) {
+                $q->where('users.id', $user->id); 
+            });
+        }
+
         // 並び
         $plans = $query
+            ->with('favoritedUsers')
             ->orderBy('start_date','desc')
             ->paginate(2)
             ->withQueryString();
 
-        return view ('travel_plans.index', [
-            'plans' => $plans]);
+        return view ('travel_plans.index', compact('plans', 'user'));
     }
     
     public function store(TravelPlanRequest $request): RedirectResponse {
@@ -156,9 +167,15 @@ class TravelPlanController extends Controller
         $travelPlan->load([
             'travelRecord',
             'days.spots',
+            'favoritedUsers'
         ]);
 
-        return view('travel_plans.show', compact('travelPlan'));
+        $user = Auth::user();
+        if ($user) {
+            $user->load('favorites');
+        }
+
+        return view('travel_plans.show', compact('travelPlan', 'user'));
     }
 
     public function edit(TravelPlan $travelPlan): View
@@ -257,5 +274,17 @@ class TravelPlanController extends Controller
         return redirect()
             ->route('travel-plans.show', $travelPlan)
             ->with('success', 'プランを更新しました。');
+    }
+
+    public function toggleFavorite(TravelPlan $travelPlan) {
+        $user = Auth::user();
+
+        if ($user->favorites()->where('travel_plan_id', $travelPlan->id)->exists()) {
+            $user->favorites()->detach($travelPlan->id);
+        } else {
+            $user->favorites()->attach($travelPlan->id);
+        }
+
+        return back();
     }
 }

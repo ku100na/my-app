@@ -36,6 +36,7 @@
                 </div>
 
                 <input type="hidden" name="type" value="{{ request('type', 'all') }}">
+                <input type="hidden" name="favorited" value="{{ request('favorited') }}">
                 <x-white-button type="submit" class="mt-2">検索</x-white-button>
             </form>
         </x-card>
@@ -99,6 +100,13 @@
                 <x-blue-button>みんなのプラン</x-blue-button>
             @endif
         </a>
+        <a href="{{ route('travel-plans.index', array_merge(request()->all(), ['favorited' => request('favorited') === '1' ? null : 1])) }}" class="flex items-center">
+            @if(request('favorited') === '1')
+                <ion-icon name="heart" class="text-red-500 text-2xl"></ion-icon>
+            @else
+                <ion-icon name="heart-outline" class="text-2xl"></ion-icon>
+            @endif
+        </a>
     </div>
     @endauth
 
@@ -117,22 +125,38 @@
                 </thead>
                 <tbody>
                     @foreach($plans as $plan)
-                    <tr>
-                        <td class="px-4 py-2">{{ $plan->title }}</td>
-                        <td class="px-4 py-2">{{ $plan->city }}</td>
-                        <td class="px-4 py-2">{{ $plan->start_date }} ~ {{ $plan->end_date }}</td>
-                        <td class="px-4 py-2">
-                            @if($plan->status === 'planned')
-                                予定
-                            @elseif($plan->status === 'completed')
-                                完了
-                            @endif
-                        </td>
-                        <td class="px-4 py-2"><x-primary-button href="{{ route('travel-plans.show', $plan->id) }}">詳細</x-primary-button></td>
-                        @auth
-                            <td class="px-4 py-2"><x-primary-button href="{{ route('travel-plans.edit', $plan->id) }}">編集</x-primary-button></td>
-                        @endauth
-                    </tr>
+                    <form method="POST" action="{{ route('travel-plans.toggleFavorite', $plan) }}">
+                        @csrf
+                        <tr>
+                            <td class="px-4 py-2">
+                            <div class="flex items-center gap-2">
+                                @auth
+                                    <button type="submit" class="flex items-center">
+                                        @if($user->favorites->contains('id', $plan->id))
+                                            <ion-icon name="heart" class="text-red-500 text-2xl"></ion-icon>
+                                        @else
+                                            <ion-icon name="heart-outline" class="text-2xl"></ion-icon>
+                                        @endif
+                                    </button>
+                                @endauth
+                                <div>{{ $plan->title }}</div>
+                            </div>
+                            </td>
+                            <td class="px-4 py-2">{{ $plan->city }}</td>
+                            <td class="px-4 py-2">{{ $plan->start_date }} ~ {{ $plan->end_date }}</td>
+                            <td class="px-4 py-2">
+                                @if($plan->status === 'planned')
+                                    予定
+                                @elseif($plan->status === 'completed')
+                                    完了
+                                @endif
+                            </td>
+                            <td class="px-4 py-2"><x-primary-button href="{{ route('travel-plans.show', $plan->id) }}">詳細</x-primary-button></td>
+                            @auth
+                                <td class="px-4 py-2"><x-primary-button href="{{ route('travel-plans.edit', $plan->id) }}">編集</x-primary-button></td>
+                            @endauth
+                        </tr>
+                    </form>
                     @endforeach
                 </tbody>
             </table>
@@ -140,29 +164,41 @@
 
         <div class="sm:hidden space-y-4">
             @foreach($plans as $plan)
-                <div class="bg-base shadow-lg rounded-lg overflow-hidden">
-                    <div class="bg-primary03 font-bold w-full p-2">
-                        {{ $plan->title }}
-                    </div>
-                    
-                    <div class="p-4 text-gray-800">
-                        <div>{{ $plan->city }}</div>
-                        <div>{{ $plan->start_date }} ~ {{ $plan->end_date }}</div>
-                        <div>
-                            @if($plan->status === 'planned')
-                                予定
-                            @else
-                                完了
-                            @endif
+                <form method="POST" action="{{ route('travel-plans.toggleFavorite', $plan) }}">
+                    @csrf
+                    <div class="bg-base shadow-lg rounded-lg overflow-hidden">
+                        <div class="bg-primary03 font-bold w-full p-2 flex justify-between">
+                            <div>{{ $plan->title }}</div>
+                            @auth
+                                <button type="submit">
+                                    @if($user->favorites->contains('id', $plan->id))
+                                        <ion-icon name="heart" class="text-red-500 text-2xl"></ion-icon>
+                                    @else
+                                        <ion-icon name="heart-outline" class="text-2xl"></ion-icon>
+                                    @endif
+                                </button>
+                            @endauth
+                        </div>
+                        
+                        <div class="p-4 text-gray-800">
+                            <div>{{ $plan->city }}</div>
+                            <div>{{ $plan->start_date }} ~ {{ $plan->end_date }}</div>
+                            <div>
+                                @if($plan->status === 'planned')
+                                    予定
+                                @else
+                                    完了
+                                @endif
+                            </div>
+                        </div>
+                        <div class="flex space-x-2 ml-4 mb-4">
+                            <x-primary-button href="{{ route('travel-plans.show', $plan->id) }}">詳細</x-primary-button>
+                            @auth
+                                <x-primary-button href="{{ route('travel-plans.edit', $plan->id) }}">編集</x-primary-button>
+                            @endauth
                         </div>
                     </div>
-                    <div class="flex space-x-2 ml-4 mb-4">
-                        <x-primary-button href="{{ route('travel-plans.show', $plan->id) }}">詳細</x-primary-button>
-                        @auth
-                            <x-primary-button href="{{ route('travel-plans.edit', $plan->id) }}">編集</x-primary-button>
-                        @endauth
-                    </div>
-                </div>
+                </form>
             @endforeach
         </div>
         
