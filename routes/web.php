@@ -12,6 +12,7 @@ Route::get('/dashboard', function () {
 })->middleware(['auth', 'verified'])->name('dashboard');
 
 Route::get('/travel-plans', [TravelPlanController::class, 'index'])->name('travel-plans.index');
+Route::get('/travel-plans/{travelPlan}', [TravelPlanController::class, 'show'])->name('travel-plans.show');
 
 Route::middleware('auth')->group(function () {
     Route::get('/profile', [ProfileController::class, 'show'])->name('profile.show');
@@ -23,7 +24,6 @@ Route::middleware('auth')->group(function () {
         return view('travel_plans.create');
     })->name('travel-plans.create');
     Route::post('/travel-plans', [TravelPlanController::class, 'store'])->name('travel-plans.store');
-    Route::get('/travel-plans/{travelPlan}', [TravelPlanController::class, 'show'])->name('travel-plans.show');
     Route::get('/travel-plans/{travelPlan}/edit', [TravelPlanController::class, 'edit'])->name('travel-plans.edit');
     Route::put('/travel-plans/{travelPlan}', [TravelPlanController::class, 'update'])->name('travel-plans.update');
 });
