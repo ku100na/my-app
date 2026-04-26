@@ -93,7 +93,7 @@ class TravelPlanController extends Controller
         $plans = $query
             ->with('favoritedUsers')
             ->orderBy('start_date','desc')
-            ->paginate(2)
+            ->paginate(5)
             ->withQueryString();
 
         return view ('travel_plans.index', compact('plans', 'user'));
@@ -324,5 +324,12 @@ class TravelPlanController extends Controller
         }
 
         return back();
+    }
+
+    public function destroy(TravelPlan $travelPlan) {
+        $travelPlan->delete();
+
+        return redirect()->route('travel-plans.index')
+            ->with('success', 'プランを削除しました。');
     }
 }

@@ -34,4 +34,19 @@ class TravelPlan extends Model
     public function user() {
         return $this->belongsTo(User::class);
     }
+
+    protected static function booted() {
+        static::deleting(function ($travelPlan) {
+
+            $travelPlan->load('days.spots');
+            
+            $travelPlan->days->each(function ($day) {
+                $day->spots()->delete();
+            });
+
+            $travelPlan->days()->delete();
+            $travelPlan->travelRecord()->delete();
+            $travelPlan->favoritedUsers()->detach();
+        });
+    }
 }
