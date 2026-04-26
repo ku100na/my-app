@@ -5,6 +5,12 @@
         </x-slot>
     </div>
 
+    @if (session('success'))
+        <p class="mt-2 font-medium text-sm text-green-600">
+            {{ session('success') }}
+        </p>
+    @endif
+    
     <div class="flex justify-end">
         <x-card x-data="{open : false}" class="m-1 px-2 py-2 bg-primary04-100 max-w-full">
             <!-- クリック部分 -->
