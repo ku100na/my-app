@@ -1,4 +1,4 @@
-<div>旅行後の記録</div>
+<div class="font-bold text-xl text-primary01">旅行後の記録</div>
 <div class="pl-4 space-y-4">
     <div>
         <x-input-label value="感想" />

@@ -16,7 +16,7 @@
     </header>
 
     <!-- Breeze の slot -->
-    <div class="min-h-screen flex flex-col items-center bg-cream text-primary01">
+    <div class="min-h-screen flex flex-col items-center bg-cream text-gray-800">
         {{ $slot }}
     </div>
 

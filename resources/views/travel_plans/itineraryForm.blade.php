@@ -1,4 +1,4 @@
-<div>日程一覧</div>
+<div class="font-bold text-xl text-primary01">日程</div>
 <div class="pl-4 space-y-4">
     <div id="plan-container" class="pl-2">
     </div>
@@ -115,7 +115,7 @@
 
 
     /* =========================
-    ③ 日程追加ボタン
+     日程追加ボタン
     ========================= */
     document.getElementById('add-day').addEventListener('click', function () {
 
@@ -127,7 +127,7 @@
 
 
     /* =========================
-    ④ スポット追加（イベント委任）
+     スポット追加（イベント委任）
     ========================= */
     document.addEventListener('click', function (e) {
 
@@ -145,7 +145,7 @@
 
 
     /* =========================
-    ⑤ 削除処理
+     削除処理
     ========================= */
     document.addEventListener('click', function (e) {
 
@@ -163,7 +163,7 @@
     });
 
     /* =========================
-    ⑥ エラー処理
+     エラー処理
     ========================= */
     const errors = @json($errors->toArray());
 
@@ -200,7 +200,7 @@
         });
     }
     /* =========================
-    ⑥ ページロード時の復元
+     ページロード時の復元
     ========================= */
     window.addEventListener('load', () => {
 

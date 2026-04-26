@@ -6,19 +6,22 @@
     </div>
 
     <div class="flex justify-end">
-        <x-card x-data="{open : false}" class="px-2 py-2 bg-primary04-100">
+        <x-card x-data="{open : false}" class="m-1 px-2 py-2 bg-primary04-100 max-w-full">
             <!-- クリック部分 -->
             <div
                 class="cursor-pointer flex justify-end"
                 @click="open = !open"
             >
-                <span x-text="open ? '検索 -' : '検索 +'" class="text-lg font-extrabold"></span>
+                <span x-text="open ? '検索 -' : '検索 +'" class="text-lg font-extrabold text-primary01"></span>
             </div>
             <form  x-show="open" x-transition method="GET" action="{{ route('travel-plans.index') }}">
                 @csrf
-                <div class="mt-4 grid grid-cols-[60px_160px_40px_160px] lg:grid-cols-[60px_160px_40px_160px_60px_160px_40px_160px] gap-2 items-center">
+                <div class="mt-4 grid gap-2 items-center
+                    grid-cols-[60px_1fr] 
+                    md:grid-cols-[60px_1fr_40px_1fr] 
+                    lg:grid-cols-[60px_1fr_40px_1fr_60px_1fr_40px_1fr] ">
                     <x-input-label for="keyword" value="キーワード" class="text-right" />
-                    <x-text-input id="keyword" type="text" name="keyword" class="col-span-3 lg:col-span-7 lg:w-1/2"
+                    <x-text-input id="keyword" type="text" name="keyword" class="md:col-span-3 lg:col-span-7 lg:w-1/2"
                         value="{{ request('keyword') }}" />
 
                     <x-input-label for="country" value="国" class="text-right" />
@@ -26,18 +29,21 @@
 
                     <x-input-label for="city" value="都市" class="text-right" />
                     <x-text-input id="city" type="text" name="city" value="{{ request('city') }}" />
-
+                    
                     <x-input-label value="予算" class="text-right" />
-                    <x-text-input id="min_budget_display" type="text" value="{{ request('min_budget') }}" />
-                    <input id="min_budget" type="hidden" name="min_budget" />
+                    <x-text-input id="min_budget_display" type="text"/>
+                    <input id="min_budget" type="hidden" name="min_budget" value="{{ request('min_budget') }}" />
                     <div class="text-center">～</div>
-                    <x-text-input id="max_budget_display" type="text" value="{{ request('max_badget') }}" />
-                    <input id="max_budget" type="hidden" name="max_budget" />
+                    <x-text-input id="max_budget_display" type="text"/>
+                    <input id="max_budget" type="hidden" name="max_budget" value="{{ request('max_budget') }}"/>
                 </div>
-
-                <input type="hidden" name="type" value="{{ request('type', 'all') }}">
-                <input type="hidden" name="favorited" value="{{ request('favorited') }}">
-                <x-white-button type="submit" class="mt-2">検索</x-white-button>
+                
+                <div class="flex justify-end gap-2 mt-2">
+                    <input type="hidden" name="type" value="{{ request('type', 'all') }}">
+                    <input type="hidden" name="favorited" value="{{ request('favorited') }}">
+                    <x-primary-button type="submit">検索</x-primary-button>
+                    <x-white-button href="{{ route('travel-plans.index') }}">クリア</x-white-button>
+                </div>
             </form>
         </x-card>
     </div>
@@ -113,10 +119,11 @@
     <div class="p-6 flex flex-col">
         <div class="hidden sm:block">
             <table class="mx-auto bg-base border border-primary03 p-8">
-                <thead class="bg-primary03">
+                <thead class="bg-primary03 text-primary01">
                     <tr>
                         <th class="px-4 py-2">プラン名</th>
-                        <th class="px-4 py-2">旅行先</th>
+                        <th class="px-4 py-2">国</th>
+                        <th class="px-4 py-2">都市</th>
                         <th class="px-4 py-2">期間</th>
                         <th class="px-4 py-2">ステータス</th>
                         <th class="px-4 py-2"></th>
@@ -142,6 +149,7 @@
                                 <div>{{ $plan->title }}</div>
                             </div>
                             </td>
+                            <td class="px-4 py-2">{{ $plan->country }}</td>
                             <td class="px-4 py-2">{{ $plan->city }}</td>
                             <td class="px-4 py-2">{{ $plan->start_date }} ~ {{ $plan->end_date }}</td>
                             <td class="px-4 py-2">
@@ -153,7 +161,9 @@
                             </td>
                             <td class="px-4 py-2"><x-primary-button href="{{ route('travel-plans.show', $plan->id) }}">詳細</x-primary-button></td>
                             @auth
-                                <td class="px-4 py-2"><x-primary-button href="{{ route('travel-plans.edit', $plan->id) }}">編集</x-primary-button></td>
+                                @if($plan->user_id === auth()->id())
+                                    <td class="px-4 py-2"><x-primary-button href="{{ route('travel-plans.edit', $plan->id) }}">編集</x-primary-button></td>
+                                @endif
                             @endauth
                         </tr>
                     </form>
@@ -194,7 +204,9 @@
                         <div class="flex space-x-2 ml-4 mb-4">
                             <x-primary-button href="{{ route('travel-plans.show', $plan->id) }}">詳細</x-primary-button>
                             @auth
-                                <x-primary-button href="{{ route('travel-plans.edit', $plan->id) }}">編集</x-primary-button>
+                                @if($plan->user_id === auth()->id())
+                                    <x-primary-button href="{{ route('travel-plans.edit', $plan->id) }}">編集</x-primary-button>
+                                @endif
                             @endauth
                         </div>
                     </div>

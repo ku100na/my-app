@@ -42,7 +42,6 @@ class TravelPlanRequest extends FormRequest
             'days.*.spots.*.hours' => 'nullable',
             'days.*.spots.*.minutes' => 'nullable|integer|min:0|max:59',
             'days.*.spots.*.review' => 'nullable|string',
-            'days.*.spots.*.name' => 'required_with:days.*.spots.*.hours,days.*.spots.*.minutes,days.*.spots.*.review',
 
             'review' => 'nullable|string|max:2000',
             'cost' => 'nullable|integer'

@@ -131,7 +131,7 @@ class TravelPlanController extends Controller
         $dayNumber = 1;
         $days = $request->input('days', []);
 
-        foreach($days as $day) {
+        foreach($days as $dayIndex => $day) {
             if(empty($day['title'])) continue;
             $dayModel = $travelPlan->days()->create([
                 'day_number' => $dayNumber,
@@ -140,24 +140,39 @@ class TravelPlanController extends Controller
 
             // spots
             if(!empty($day['spots'])) {
-                foreach($day['spots'] as $spot) {
+                foreach($day['spots'] as $spotIndex => $spot) {
                     // 空のスポットはスキップ
-                    if(empty($spot['name'])) continue;
+                    $duration = (($spot['hours'] ?? 0) * 60) + ($spot['minutes'] ?? 0);
+                    
+                    if ($duration > 0 || !empty($spot['review'])) {
+                        if(empty($spot['name'])) {
+                            return back()
+                            ->withErrors([
+                                "days.$dayIndex.spots.$spotIndex.name"
+                                => 'スポット名は関連項目が設定されている場合必須です。'
+                            ])
+                            ->withInput();
+                        }
+                    }
 
-                    $dayModel->spots()->create([
-                        'name' => $spot['name'] ?? null,
-                        'duration' => (($spot['hours'] ?? 0) * 60) + ($spot['minutes'] ?? 0),
-                        'review' => $spot['review'] ?? null,
-                    ]);
+                    if (!empty($spot['name'])) {
+                        $dayModel->spots()->create([
+                            'name' => $spot['name'] ?? null,
+                            'duration' => $duration,
+                            'review' => $spot['review'] ?? null,
+                        ]);
+                    }
                 }
             }
             $dayNumber++;
         }
 
-        $travelPlan->travelRecord()->create([
-            'review' => $request->review,
-            'cost' => $request->cost,
-        ]);
+        if (!empty($request->review) && !empty($request->cost)) {
+            $travelPlan->travelRecord()->create([
+                'review' => $request->review,
+                'cost' => $request->cost,
+            ]);
+        }
 
         return redirect()->route('travel-plans.show', $travelPlan->id)->with('success', 'プランを作成しました。');
     }
@@ -189,10 +204,12 @@ class TravelPlanController extends Controller
             return [
                 'title' => $day->title,
                 'spots' => $day->spots->map(function ($spot) {
+                    $duration = $spot->duration ?? 0;
                     return [
                         'name' => $spot->name,
-                        'hours' => $spot->hours,
-                        'minutes' => $spot->minutes,
+                        'duration' => $spot->duration,
+                        'hours' => intdiv($duration, 60),
+                        'minutes' => $duration % 60,
                         'review' => $spot->review,
                     ];
                 })->values()
@@ -209,6 +226,7 @@ class TravelPlanController extends Controller
             'title' => $request->title,
             'country' => $request->country,
             'city' => $request->city,
+            'overview' => $request->overview,
             'start_date' => $request->start_date,
             'end_date' => $request->end_date,
             'is_public' => $request->boolean('is_public'),
@@ -240,7 +258,7 @@ class TravelPlanController extends Controller
         $days = $request->input('days', []);
         $dayNumber = 1;
 
-        foreach ($days as $day) {
+        foreach ($days as $dayIndex => $day) {
             if (empty($day['title'])) continue;
             $dayModel = $travelPlan->days()->create([
                 'day_number' => $dayNumber,
@@ -249,27 +267,47 @@ class TravelPlanController extends Controller
 
             // spots
             if (!empty($day['spots'])) {
-                foreach ($day['spots'] as $spot) {
-                    if (empty($spot['name'])) continue;
+                foreach ($day['spots'] as $spotIndex => $spot) {
+                    // 空のスポットはスキップ
+                    $duration = (($spot['hours'] ?? 0) * 60) + ($spot['minutes'] ?? 0);
 
-                    $dayModel->spots()->create([
-                        'name' => $spot['name'] ?? null,
-                        'duration' => (($spot['hours'] ?? 0) * 60) + ($spot['minutes'] ?? 0),
-                        'review' => $spot['review'] ?? null,
-                    ]);
+                    if ($duration >0 || !empty($spot['review'])) {
+                        if (empty($spot['name'])) {
+                            return back()
+                            ->withErrors([
+                                "days.$dayIndex.spots.$spotIndex.name"
+                                => 'スポット名は関連項目が設定されている場合必須です。'
+                            ])
+                            ->withInput();
+                        }
+                    }
+
+                    if (!empty($spot['name'])) {
+                        $dayModel->spots()->create([
+                            'name' => $spot['name'] ?? null,
+                            'duration' => (($spot['hours'] ?? 0) * 60) + ($spot['minutes'] ?? 0),
+                            'review' => $spot['review'] ?? null,
+                        ]);
+                    }
                 }
             }
             $dayNumber++;
         }
 
         // travel records更新・作成
-        $travelPlan->travelRecord()->updateOrCreate(
-            ['travel_plan_id' => $travelPlan->id],
-            [
-                'review' => $request->review,
-                'cost' => $request->cost,
-            ]
-        );
+        $review = $request->review;
+        $cost = $request->cost;
+        if (blank($review) && blank($cost)) {
+            $travelPlan->travelRecord()->delete();
+        } else {
+            $travelPlan->travelRecord()->updateOrCreate(
+                ['travel_plan_id' => $travelPlan->id],
+                [
+                    'review' => $request->review,
+                    'cost' => $request->cost,
+                ]
+            );
+        }
 
         return redirect()
             ->route('travel-plans.show', $travelPlan)

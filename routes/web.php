@@ -12,7 +12,6 @@ Route::get('/dashboard', function () {
 })->middleware(['auth', 'verified'])->name('dashboard');
 
 Route::get('/travel-plans', [TravelPlanController::class, 'index'])->name('travel-plans.index');
-Route::get('/travel-plans/{travelPlan}', [TravelPlanController::class, 'show'])->name('travel-plans.show');
 
 Route::middleware('auth')->group(function () {
     Route::get('/profile', [ProfileController::class, 'show'])->name('profile.show');
@@ -28,4 +27,7 @@ Route::middleware('auth')->group(function () {
     Route::put('/travel-plans/{travelPlan}', [TravelPlanController::class, 'update'])->name('travel-plans.update');
     Route::post('/travel-plans/{travelPlan}/favorite', [TravelPlanController::class, 'toggleFavorite'])->name('travel-plans.toggleFavorite');
 });
+
+Route::get('/travel-plans/{travelPlan}', [TravelPlanController::class, 'show'])->name('travel-plans.show');
+
 require __DIR__.'/auth.php';

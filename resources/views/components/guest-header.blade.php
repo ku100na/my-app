@@ -2,7 +2,7 @@
     <a href="{{ route('welcome') }}" class="shrink-0">
         <x-application-logo class="block w-32 h-auto pt-5" />
     </a>
-    <x-nav-link class="sm:-my-px sm:ms-10" :href="route('travel-plans.index')">
+    <x-nav-link class="sm:-my-px sm:ms-10" :href="route('travel-plans.index')" active-route="travel-plans.index">
             プラン一覧
     </x-nav-link>
 </div>
