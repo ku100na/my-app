@@ -24,9 +24,9 @@
     </header>
 
     <!-- Breeze の slot -->
-    <div class="min-h-screen flex flex-col p-6 bg-cream text-primary01">
+    <div class="min-h-screen flex flex-col p-6 bg-cream text-gray-800">
         @isset($title)
-            <div class="font-bold text-2xl pb-2">
+            <div class="font-bold text-2xl pb-2 text-primary01">
                 {{ $title }}
             </div>
         @endisset

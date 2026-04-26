@@ -1,58 +1,87 @@
-<p align="center"><a href="https://laravel.com" target="_blank"><img src="https://raw.githubusercontent.com/laravel/art/master/logo-lockup/5%20SVG/2%20CMYK/1%20Full%20Color/laravel-logolockup-cmyk-red.svg" width="400" alt="Laravel Logo"></a></p>
+## 使用技術
 
-<p align="center">
-<a href="https://github.com/laravel/framework/actions"><img src="https://github.com/laravel/framework/workflows/tests/badge.svg" alt="Build Status"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/dt/laravel/framework" alt="Total Downloads"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/v/laravel/framework" alt="Latest Stable Version"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/l/laravel/framework" alt="License"></a>
-</p>
+<img src="https://img.shields.io/badge/-Laravel-FF2D20.svg?logo=laravel&style=plastic">
+<img src="https://img.shields.io/badge/-Php-777BB4.svg?logo=php&style=plastic">
+<img src="https://img.shields.io/badge/-Node.js-339933.svg?logo=node.js&style=plastic">
+<img src="https://img.shields.io/badge/-JavaScript-F7DF1E.svg?logo=javascript&style=plastic">
+<img src="https://img.shields.io/badge/-TailwindCSS-06B6D4?logo=tailwindcss&style=plastic">
+<img src="https://img.shields.io/badge/-NGINX-269539.svg?logo=nginx&style=plastic">
+<img src="https://img.shields.io/badge/-MySql-4479A1.svg?logo=mysql&style=plastic">
+<img src="https://img.shields.io/badge/-Docker-1488C6.svg?logo=docker&style=plastic">
 
-## About Laravel
 
-Laravel is a web application framework with expressive, elegant syntax. We believe development must be an enjoyable and creative experience to be truly fulfilling. Laravel takes the pain out of development by easing common tasks used in many web projects, such as:
+# Travel Planner（旅行プラン管理アプリ）
+## 概要
 
-- [Simple, fast routing engine](https://laravel.com/docs/routing).
-- [Powerful dependency injection container](https://laravel.com/docs/container).
-- Multiple back-ends for [session](https://laravel.com/docs/session) and [cache](https://laravel.com/docs/cache) storage.
-- Expressive, intuitive [database ORM](https://laravel.com/docs/eloquent).
-- Database agnostic [schema migrations](https://laravel.com/docs/migrations).
-- [Robust background job processing](https://laravel.com/docs/queues).
-- [Real-time event broadcasting](https://laravel.com/docs/broadcasting).
+ユーザーが旅行プランを作成・管理・共有できるWebアプリです。
+日程ごとに訪問スポットを登録し、予算や条件に応じて検索できます。
+また、お気に入り機能やユーザー認証機能を備えています。
 
-Laravel is accessible, powerful, and provides tools required for large, robust applications.
+## セットアップ方法
+### 前提環境
+- Docker / Docker Compose がインストールされていること
 
-## Learning Laravel
+---
 
-Laravel has the most extensive and thorough [documentation](https://laravel.com/docs) and video tutorial library of all modern web application frameworks, making it a breeze to get started with the framework.
+### 手順
 
-In addition, [Laracasts](https://laracasts.com) contains thousands of video tutorials on a range of topics including Laravel, modern PHP, unit testing, and JavaScript. Boost your skills by digging into our comprehensive video library.
+1. リポジトリをクローン  
+git clone https://github.com/ku100na/my-app.git  
+cd my-app
+2. Docker起動  
+   docker compose up -d
+3. PHP依存関係インストール  
+   docker compose exec app composer install
+4. フロントエンド依存関係インストール  
+   docker compose exec app npm install
+5. 環境設定  
+   cp .env.example .env
+6. アプリキー生成  
+   docker compose exec app php artisan key:generate
+7. データベース作成 & マイグレーション  
+   docker compose exec app php artisan migrate
+8. フロントビルド  
+   docker compose exec app npm run dev
+   
+---
 
-You can also watch bite-sized lessons with real-world projects on [Laravel Learn](https://laravel.com/learn), where you will be guided through building a Laravel application from scratch while learning PHP fundamentals.
+### アクセス
 
-## Agentic Development
+http://localhost:8000
 
-Laravel's predictable structure and conventions make it ideal for AI coding agents like Claude Code, Cursor, and GitHub Copilot. Install [Laravel Boost](https://laravel.com/docs/ai) to supercharge your AI workflow:
+## 機能一覧
+### メイン機能
+- 旅行プランの作成・編集・削除
+- 旅行プランへの写真アップロード機能
+- 日程ごとにスポットを追加し、所要時間を管理
+- 予算・目的地・キーワードによる検索機能
+- 自分のプラン・他ユーザーのプラン・お気に入りプランの表示切替機能
+- プランのお気に入り登録機能
+- プランの公開・非公開設定
 
-```bash
-composer require laravel/boost --dev
+### 認証機能
+- ユーザー登録・ログイン機能
+- メールアドレス変更機能
+- メール認証機能
+- パスワード再設定機能
+- ユーザープロフィール編集機能
 
-php artisan boost:install
-```
+## 工夫した点
 
-Boost provides your agent 15+ tools and skills that help agents build Laravel applications while following best practices.
+- 日程ごとにスポットを管理できるよう、daysとspotsを分けたリレーション構造を設計
+- ボタン操作で日程やスポットの入力欄を動的に追加できるフォームを実装し、柔軟なプラン作成を可能にした
+- 所要時間を「分」で一元管理し、表示時に時間と分へ変換することでデータの扱いやすさと表示の柔軟性を両立
+- 予算検索でカンマ付き入力に対応し、ユーザーの入力しやすさを向上
+- 表示用と送信用のinputを分け、フォーマット表示と正確なデータ送信を両立
+- 予算・キーワード検索では入力値の正規化を行い、検索精度を向上
+- 画面サイズに応じてレイアウトを切り替えることで、スマートフォンでも操作しやすいUIを実装
+- 自分のプラン・他ユーザーのプラン・お気に入りプランを切り替えて表示できるようにし、目的に応じたプラン閲覧を可能にした
 
-## Contributing
+## 今後の課題
 
-Thank you for considering contributing to the Laravel framework! The contribution guide can be found in the [Laravel documentation](https://laravel.com/docs/contributions).
-
-## Code of Conduct
-
-In order to ensure that the Laravel community is welcoming to all, please review and abide by the [Code of Conduct](https://laravel.com/docs/contributions#code-of-conduct).
-
-## Security Vulnerabilities
-
-If you discover a security vulnerability within Laravel, please send an e-mail to Taylor Otwell via [taylor@laravel.com](mailto:taylor@laravel.com). All security vulnerabilities will be promptly addressed.
-
-## License
-
-The Laravel framework is open-sourced software licensed under the [MIT license](https://opensource.org/licenses/MIT).
+- 旅行プランに対してコメントできる機能の追加
+- プラン詳細画面のユーザー名をリンク化し、同一ユーザーの他プラン閲覧を可能にすることで、回遊性を向上させる
+- 予算・キーワードに加え、日付（旅行時期）や日数による検索機能の拡張
+- 1プラン1画像の仕様を改善し、複数画像の登録およびスポット単位での画像追加機能の実装
+- データ量増加を考慮した検索処理の最適化（インデックス設計やクエリ改善）
+- サイト管理者向けの管理機能（ユーザー・投稿の管理）の追加
