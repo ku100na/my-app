@@ -33,4 +33,4 @@ COPY nginx.conf /etc/nginx/nginx.conf
 RUN chmod -R 775 storage bootstrap/cache
 
 # 起動
-CMD service nginx start && php-fpm
+CMD ["sh", "-c", "nginx -g 'daemon off;' & php-fpm"]
