@@ -42,24 +42,26 @@ RUN apt-get update && apt-get install -y \
 # Composer
 COPY --from=composer:latest /usr/bin/composer /usr/bin/composer
 
-# アプリコピー
-COPY . .
+COPY composer.json composer.lock ./
 
-# Composer install（本番最適化）
 RUN composer install \
-    --no-dev \
     --no-interaction \
     --prefer-dist \
+    --no-dev \
     --optimize-autoloader
+
+# アプリコピー
+COPY . .
 
 # Vite build成果物
 COPY --from=node /app/public/build ./public/build
 
-RUN echo "=== PHP BUILD CHECK ===" && ls -R /var/www/html/public/build || true
-
-# Laravelキャッシュ最適化
-RUN php artisan optimize:clear || true
-
+RUN php artisan optimize:clear || true \
+    && php artisan config:clear || true \
+    && php artisan cache:clear || true \
+    && php artisan view:clear || true \
+    && php artisan route:clear || true
+    
 # 権限
 RUN chmod -R 775 storage bootstrap/cache
 
@@ -69,8 +71,3 @@ EXPOSE 8080
 # 起動
 CMD ["sh", "-c", "php artisan serve --host=0.0.0.0 --port=${PORT:-8080}"]
 
-RUN php artisan optimize:clear || true \
-    && php artisan config:clear || true \
-    && php artisan cache:clear || true \
-    && php artisan view:clear || true \
-    && php artisan route:clear || true
