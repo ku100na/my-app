@@ -48,8 +48,8 @@ RUN composer install \
     --no-interaction \
     --prefer-dist \
     --no-dev \
-    --optimize-autoloader
-
+    --ignore-platform-reqs
+    
 # アプリコピー
 COPY . .
 
@@ -61,7 +61,7 @@ RUN php artisan optimize:clear || true \
     && php artisan cache:clear || true \
     && php artisan view:clear || true \
     && php artisan route:clear || true
-    
+
 # 権限
 RUN chmod -R 775 storage bootstrap/cache
 
