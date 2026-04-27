@@ -22,11 +22,12 @@ COPY . .
 
 RUN composer install --no-interaction --prefer-dist --optimize-autoloader
 
+RUN echo "BUILD START" && npm run build && echo "BUILD END"
+
 RUN npm cache clean --force
 RUN npm install
 RUN npm run build
 
 RUN chmod -R 775 storage bootstrap/cache
 
-RUN php artisan optimize:clear
-CMD php artisan serve --host=0.0.0.0 --port=${PORT}
+CMD php artisan optimize:clear && php artisan serve --host=0.0.0.0 --port=${PORT}
