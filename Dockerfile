@@ -69,7 +69,8 @@ EXPOSE 8080
 # 起動
 CMD ["sh", "-c", "php artisan serve --host=0.0.0.0 --port=${PORT:-8080}"]
 
-RUN php artisan optimize:clear || true
-RUN php artisan config:clear || true
-RUN php artisan view:clear || true
-RUN php artisan route:clear || true
+RUN php artisan optimize:clear \
+    && php artisan config:clear \
+    && php artisan cache:clear \
+    && php artisan view:clear \
+    && php artisan route:clear
