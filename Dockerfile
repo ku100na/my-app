@@ -27,15 +27,9 @@ COPY . .
 # PHP依存
 RUN composer install --no-interaction --prefer-dist --optimize-autoloader
 
-# Viteビルド（ここで public/build が作られる）
-RUN echo "NODE VERSION:" && node -v
-RUN echo "NPM VERSION:" && npm -v
-RUN echo "PWD:" && pwd
-RUN echo "FILES:" && ls -la
-
-RUN echo "===== BUILD START ====="
+# Viteビルド
 RUN npm run build
-RUN echo "===== BUILD END ====="
+RUN echo "=== BUILD OUTPUT ===" && ls -R public/build || true
 
 # 権限
 RUN chmod -R 775 storage bootstrap/cache
