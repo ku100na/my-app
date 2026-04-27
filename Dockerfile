@@ -1,4 +1,3 @@
-RUN pwd && ls -la
 WORKDIR /var/www/html
 
 # PHP依存
