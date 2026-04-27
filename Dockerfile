@@ -10,16 +10,21 @@ RUN apt-get update && apt-get install -y \
     libzip-dev \
     zip \
     curl \
-    npm \
+    gnupg \
     && docker-php-ext-configure gd --with-freetype --with-jpeg \
     && docker-php-ext-install -j$(nproc) gd pdo_mysql zip
+
+RUN curl -fsSL https://deb.nodesource.com/setup_20.x | bash - \
+    && apt-get install -y nodejs
 
 COPY --from=composer:latest /usr/bin/composer /usr/bin/composer
 COPY . .
 
 RUN composer install --no-interaction --prefer-dist --optimize-autoloader
 
-RUN npm install && npm run build
+RUN npm install
+RUN npm run build
+
 RUN chmod -R 775 storage bootstrap/cache
 
-CMD php artisan optimize:clear && php artisan serve --host=0.0.0.0 --port=${PORT}
+CMD php artisan serve --host=0.0.0.0 --port=${PORT}
