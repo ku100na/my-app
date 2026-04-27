@@ -1,5 +1,4 @@
-FROM php:8.4-fpm
-
+RUN pwd && ls -la
 WORKDIR /var/www/html
 
 # PHP依存
@@ -28,12 +27,15 @@ COPY . .
 # PHP依存
 RUN composer install --no-interaction --prefer-dist --optimize-autoloader
 
-RUN pwd && ls -la && ls -la public && npm run build && ls -R public
-RUN npm run build && find . -name "manifest.json" && find . -name "app*.css"
-RUN find . -type d -name "dist" && find . -type d -name "build"
-
 # Viteビルド（ここで public/build が作られる）
+RUN echo "NODE VERSION:" && node -v
+RUN echo "NPM VERSION:" && npm -v
+RUN echo "PWD:" && pwd
+RUN echo "FILES:" && ls -la
+
+RUN echo "===== BUILD START ====="
 RUN npm run build
+RUN echo "===== BUILD END ====="
 
 # 権限
 RUN chmod -R 775 storage bootstrap/cache
