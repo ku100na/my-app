@@ -18,15 +18,13 @@ RUN apt-get update && apt-get install -y \
     pdo_mysql \
     mbstring \
     zip \
-    xml \
-    tokenizer
+    xml
 
 COPY --from=composer:latest /usr/bin/composer /usr/bin/composer
 
-COPY composer.json composer.lock ./
-RUN composer install --no-interaction --prefer-dist --optimize-autoloader
-
 COPY . .
+
+RUN composer install --no-interaction --prefer-dist --optimize-autoloader
 
 COPY --from=node /app/public/build ./public/build
 
