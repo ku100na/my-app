@@ -53,7 +53,7 @@ RUN composer install \
     --optimize-autoloader
 
 # Vite build成果物
-COPY --from=node /my-app/public/build ./public/build
+COPY --from=node /app/public/build ./public/build
 
 RUN echo "=== PHP BUILD CHECK ===" && ls -R /var/www/html/public/build || true
 
