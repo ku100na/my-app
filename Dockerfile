@@ -19,4 +19,8 @@ COPY --from=composer:latest /usr/bin/composer /usr/bin/composer
 COPY . .
 
 RUN composer install --no-interaction --prefer-dist --optimize-autoloader
+
+RUN chmod +x render-build.sh
+RUN bash render-build.sh
+
 CMD php artisan serve --host=0.0.0.0 --port=10000

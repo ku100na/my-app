@@ -1,12 +1,8 @@
 #!/usr/bin/env bash
-
 set -e
 
-echo "Installing dependencies..."
-composer install --no-dev --optimize-autoloader
-
 echo "Running migrations..."
-php artisan migrate --force
+php artisan migrate --force --step
 
-echo "Caching config..."
-php artisan config:cache
+echo "Running seeders..."
+php artisan db:seed --force

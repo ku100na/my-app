@@ -39,7 +39,7 @@ class TravelPlanSeeder extends Seeder
 
         foreach ($plans as $data) {
 
-            $plan = TravelPlan::create([
+            $plan = TravelPlan::updateOrCreate([
                 'title' => $data['title'],
                 'user_id' => $users->random()->id,
                 'country' => $data['country'],
@@ -51,19 +51,19 @@ class TravelPlanSeeder extends Seeder
                 'is_public' => (bool) rand(0, 1),
             ]);
 
-            $day = $plan->days()->create([
+            $day = $plan->days()->updateOrCreate([
                 'day_number' => 1,
                 'title' => '観光1日目',
             ]);
 
-            $day->spots()->create([
+            $day->spots()->updateOrCreate([
                 'name' => '人気観光スポット',
                 'duration' => 90,
                 'review' => 'とても良かったです',
             ]);
 
             // ⭐ TravelRecordも追加
-            $plan->travelRecord()->create([
+            $plan->travelRecord()->updateOrCreate([
                 'review' => 'とても充実した旅行でした',
                 'cost' => 50000,
             ]);
