@@ -20,10 +20,7 @@ COPY . .
 RUN composer install --no-interaction --prefer-dist --optimize-autoloader
 
 RUN npm install && npm run build
-
-RUN rm -f bootstrap/cache/config.php
-
 RUN php artisan optimize:clear
 RUN chmod -R 775 storage bootstrap/cache
-EXPOSE 8080
+
 CMD php artisan serve --host=0.0.0.0 --port=${PORT}
