@@ -16,26 +16,23 @@ RUN npm run build
 # =========================
 # PHP stage
 # =========================
-FROM php:8.4-fpm
+FROM php:8.4-cli
 
 WORKDIR /var/www/html
 
-# システム依存
+# 必要パッケージ
 RUN apt-get update && apt-get install -y \
     git \
     unzip \
     zip \
     curl \
     libzip-dev \
-    libpng-dev \
-    libjpeg-dev \
-    libfreetype6-dev \
     && docker-php-ext-install pdo_mysql zip
 
-# Composerインストール
+# Composer
 COPY --from=composer:latest /usr/bin/composer /usr/bin/composer
 
-# まずcomposerファイルだけコピー
+# 依存定義コピー
 COPY composer.json composer.lock ./
 
 # vendor生成
@@ -44,7 +41,7 @@ RUN composer install --no-interaction --prefer-dist --optimize-autoloader
 # アプリ本体コピー
 COPY . .
 
-# Nodeビルド成果物コピー（Vite）
+# Vite build成果物を移す
 COPY --from=node /app/public/build ./public/build
 
 # Laravelキャッシュクリア
