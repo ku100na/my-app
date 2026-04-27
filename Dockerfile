@@ -29,10 +29,9 @@ RUN composer install --no-interaction --prefer-dist --optimize-autoloader
 
 # Viteビルド
 RUN npm run build
-RUN echo "=== BUILD OUTPUT ===" && ls -R public/build || true
 
 # 権限
 RUN chmod -R 775 storage bootstrap/cache
 
 # 起動
-CMD php artisan optimize:clear && php -S 0.0.0.0:${PORT} -t public
+CMD ["sh", "-c", "php artisan optimize:clear && php -S 0.0.0.0:$PORT -t public"]
