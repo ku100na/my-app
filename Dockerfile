@@ -35,4 +35,4 @@ RUN echo "=== BUILD OUTPUT ===" && ls -R public/build || true
 RUN chmod -R 775 storage bootstrap/cache
 
 # 起動
-CMD php artisan serve --host=0.0.0.0 --port=${PORT}
+CMD php artisan optimize:clear && php -S 0.0.0.0:${PORT} -t public
