@@ -5,51 +5,68 @@ namespace Database\Seeders;
 use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
 use App\Models\TravelPlan;
+use App\Models\Day;
+use App\Models\Spot;
 use App\Models\User;
 
 class TravelPlanSeeder extends Seeder
 {
-    /**
-     * Run the database seeds.
-     */
     public function run(): void
     {
-        $user = User::first();
+        $users = User::all();
+        $plans = [
+            [
+                'title' => '東京2泊3日旅行',
+                'country' => '日本',
+                'city' => '東京',
+            ],
+            [
+                'title' => '東京グルメ旅',
+                'country' => '日本',
+                'city' => '東京',
+            ],
+            [
+                'title' => '京都のんびり旅',
+                'country' => '日本',
+                'city' => '京都',
+            ],
+            [
+                'title' => '北海道ドライブ旅行',
+                'country' => '日本',
+                'city' => '北海道',
+            ],
+        ];
 
-        TravelPlan::create([
-            'user_id' => $user->id,
-            'title' => 'フィンランド旅行',
-            'country' => 'フィンランド',
-            'city' => 'ヘルシンキ',
-            'start_date' => '2025-06-01',
-            'end_date' => '2025-06-05',
-            'overview' => 'サウナと自然を楽しむ旅',
-            'is_public' => true,
-            'status' => 'planned',
-        ]);
+        foreach ($plans as $data) {
 
-        TravelPlan::create([
-            'user_id' => $user->id,
-            'title' => '大阪旅行',
-            'country' => '日本',
-            'city' => '大阪',
-            'start_date' => '2025-03-10',
-            'end_date' => '2025-03-12',
-            'overview' => '食べ歩きツアー',
-            'is_public' => true,
-            'status' => 'completed',
-        ]);
+            $plan = TravelPlan::create([
+                'title' => $data['title'],
+                'user_id' => $users->random()->id,
+                'country' => $data['country'],
+                'city' => $data['city'],
+                'start_date' => now()->addDays(rand(1, 10)),
+                'end_date' => now()->addDays(rand(11, 20)),
+                'status' => collect(['planned', 'completed'])->random(),
+                'overview' => '観光とグルメを楽しむ旅行プラン',
+                'is_public' => (bool) rand(0, 1),
+            ]);
 
-        TravelPlan::create([
-            'user_id' => $user->id,
-            'title' => 'パリ旅行',
-            'country' => 'フランス',
-            'city' => 'パリ',
-            'start_date' => '2026-09-01',
-            'end_date' => '2026-09-07',
-            'overview' => '美術館巡り',
-            'is_public' => false,
-            'status' => 'planned',
-        ]);
-            }
+            $day = $plan->days()->create([
+                'day_number' => 1,
+                'title' => '観光1日目',
+            ]);
+
+            $day->spots()->create([
+                'name' => '人気観光スポット',
+                'duration' => 90,
+                'review' => 'とても良かったです',
+            ]);
+
+            // ⭐ TravelRecordも追加
+            $plan->travelRecord()->create([
+                'review' => 'とても充実した旅行でした',
+                'cost' => 50000,
+            ]);
         }
+    }
+}

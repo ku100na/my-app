@@ -39,7 +39,7 @@ cd my-app
 6. アプリキー生成  
    docker compose exec app php artisan key:generate
 7. データベース作成 & マイグレーション  
-   docker compose exec app php artisan migrate
+   docker compose exec app php artisan migrate:fresh --seed
 8. フロントビルド  
    docker compose exec app npm run dev
    
