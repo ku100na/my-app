@@ -41,18 +41,18 @@ RUN apt-get update && apt-get install -y \
 
 # Composer
 COPY --from=composer:latest /usr/bin/composer /usr/bin/composer
-
-COPY composer.json composer.lock ./
+    
+# アプリコピー
+COPY . .
 
 RUN composer install \
     --no-interaction \
     --prefer-dist \
     --no-dev \
-    --ignore-platform-reqs
-    
-# アプリコピー
-COPY . .
-
+    --optimize-autoloader \
+    --ignore-platform-reqs \
+    --no-scripts
+        
 # Vite build成果物
 COPY --from=node /app/public/build ./public/build
 
