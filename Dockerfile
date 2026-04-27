@@ -18,16 +18,17 @@ RUN curl -fsSL https://deb.nodesource.com/setup_20.x | bash - \
     && apt-get install -y nodejs
 
 COPY --from=composer:latest /usr/bin/composer /usr/bin/composer
+
+COPY package*.json ./
+RUN npm install
+
 COPY . .
+
+RUN npm run build
 
 RUN composer install --no-interaction --prefer-dist --optimize-autoloader
 
-RUN echo "BUILD START" && npm run build && echo "BUILD END"
-
-RUN npm cache clean --force
-RUN npm install
-RUN npm run build
-
+RUN ls -la node_modules/.bin
 RUN chmod -R 775 storage bootstrap/cache
 
 CMD php artisan optimize:clear && php artisan serve --host=0.0.0.0 --port=${PORT}
