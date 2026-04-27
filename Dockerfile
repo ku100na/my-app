@@ -55,6 +55,8 @@ RUN composer install \
 # Vite build成果物
 COPY --from=node /my-app/public/build ./public/build
 
+RUN echo "=== PHP BUILD CHECK ===" && ls -R /var/www/html/public/build || true
+
 # Laravelキャッシュ最適化
 RUN php artisan optimize:clear || true
 
@@ -63,8 +65,6 @@ RUN chmod -R 775 storage bootstrap/cache
 
 # Railway用ポート
 EXPOSE 8080
-
-RUN echo "=== PHP BUILD CHECK ===" && ls -R /var/www/html/public/build || true
 
 # 起動
 CMD ["sh", "-c", "php artisan serve --host=0.0.0.0 --port=${PORT:-8080}"]
