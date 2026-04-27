@@ -52,7 +52,7 @@ RUN composer install \
     --optimize-autoloader \
     --ignore-platform-reqs \
     --no-scripts
-        
+
 # Vite build成果物
 COPY --from=node /app/public/build ./public/build
 
@@ -69,5 +69,4 @@ RUN chmod -R 775 storage bootstrap/cache
 EXPOSE 8080
 
 # 起動
-CMD ["sh", "-c", "php artisan serve --host=0.0.0.0 --port=${PORT:-8080}"]
-
+CMD ["sh", "-c", "php artisan migrate --force && php artisan db:seed --force --class=DatabaseSeeder && php artisan serve --host=0.0.0.0 --port=${PORT:-8080}"]
