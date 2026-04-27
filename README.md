@@ -46,8 +46,16 @@ cd my-app
 ---
 
 ### アクセス
+アプリはこちらから利用できます：
+https://xxxx.up.railway.app
 
-http://localhost:8000
+### テストアカウント
+デモ用ユーザーはSeederで自動作成されます。
+
+| Email | Password |
+|------|----------|
+| test1@example.com | password |
+| test2@example.com | password |
 
 ## 機能一覧
 ### メイン機能
