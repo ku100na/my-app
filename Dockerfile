@@ -53,7 +53,7 @@ RUN composer install \
     --optimize-autoloader
 
 # Vite build成果物
-COPY --from=node /app/public/build ./public/build
+COPY --from=node /my-app/public/build ./public/build
 
 # Laravelキャッシュ最適化
 RUN php artisan optimize:clear || true
@@ -63,6 +63,8 @@ RUN chmod -R 775 storage bootstrap/cache
 
 # Railway用ポート
 EXPOSE 8080
+
+RUN find public -type f
 
 # 起動
 CMD ["sh", "-c", "php artisan serve --host=0.0.0.0 --port=${PORT:-8080}"]
