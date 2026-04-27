@@ -13,3 +13,5 @@ RUN apt-get update && apt-get install -y \
     npm \
     && docker-php-ext-configure gd --with-freetype --with-jpeg \
     && docker-php-ext-install -j$(nproc) gd pdo_mysql zip
+
+CMD php artisan serve --host=0.0.0.0 --port=10000
