@@ -64,7 +64,7 @@ RUN chmod -R 775 storage bootstrap/cache
 # Railway用ポート
 EXPOSE 8080
 
-RUN find public -type f
+RUN echo "=== PHP BUILD CHECK ===" && ls -R /var/www/html/public/build || true
 
 # 起動
 CMD ["sh", "-c", "php artisan serve --host=0.0.0.0 --port=${PORT:-8080}"]
