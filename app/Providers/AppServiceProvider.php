@@ -4,6 +4,7 @@ namespace App\Providers;
 
 use Illuminate\Support\ServiceProvider;
 use Illuminate\Validation\Rules\Password;
+use Illuminate\Support\Facade\Illuminate\Support\Facades\URL;
 
 class AppServiceProvider extends ServiceProvider
 {
@@ -28,5 +29,6 @@ class AppServiceProvider extends ServiceProvider
                 ->symbols()      // 記号を含む
                 ->uncompromised(); // 漏洩したパスワードでないかチェック
         });
+        URL::forceScheme('https');
     }
 }
