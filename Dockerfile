@@ -28,6 +28,10 @@ COPY . .
 # PHP依存
 RUN composer install --no-interaction --prefer-dist --optimize-autoloader
 
+RUN pwd && ls -la && ls -la public && npm run build && ls -R public
+RUN npm run build && find . -name "manifest.json" && find . -name "app*.css"
+RUN find . -type d -name "dist" && find . -type d -name "build"
+
 # Viteビルド（ここで public/build が作られる）
 RUN npm run build
 

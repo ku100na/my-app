@@ -16,4 +16,7 @@ export default defineConfig({
         host: 'localhost',  // ブラウザからアクセスするホスト
         },
     },
+    build: {
+        outDir: 'public/build',
+    },
 });
