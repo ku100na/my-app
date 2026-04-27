@@ -5,6 +5,9 @@ use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\TravelPlanController;
 use Illuminate\Support\Facades\Route;
 
+Route::get('/debug', function () {
+    dd(env('DB_CONNECTION'));
+});
 Route::get('/', [GuestController::class, 'index'])->name('welcome');
 
 Route::get('/dashboard', function () {
