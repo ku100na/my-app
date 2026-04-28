@@ -26,8 +26,10 @@ RUN apt-get update && apt-get install -y \
     unzip \
     zip \
     curl \
+    libfreetype6-dev \
+    libjpeg62-turbo-dev \
+    libpng-dev \
     libzip-dev \
-    libxml2-dev \
     zlib1g-dev \
     libonig-dev \
     pkg-config \
@@ -52,8 +54,6 @@ RUN composer install \
     --optimize-autoloader \
     --ignore-platform-reqs \
     --no-scripts
-
-RUN php artisan storage:link || true
 
 # Vite build成果物
 COPY --from=node /app/public/build ./public/build
