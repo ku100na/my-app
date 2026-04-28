@@ -47,7 +47,7 @@ cd my-app
 
 ### アクセス
 アプリはこちらから利用できます：
-https://xxxx.up.railway.app
+https://my-app-production-8a1e.up.railway.app
 
 ### テストアカウント
 デモ用ユーザーはSeederで自動作成されます。
