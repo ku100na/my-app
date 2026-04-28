@@ -26,20 +26,23 @@ RUN apt-get update && apt-get install -y \
     unzip \
     zip \
     curl \
-    libfreetype6-dev \
-    libjpeg62-turbo-dev \
     libpng-dev \
+    libjpeg-dev \
+    libfreetype6-dev \
     libzip-dev \
+    libxml2-dev \
     zlib1g-dev \
     libonig-dev \
     pkg-config \
+    && docker-php-ext-configure gd --with-freetype --with-jpeg \
     && docker-php-ext-configure zip \
     && docker-php-ext-install \
+        gd \
         pdo \
         pdo_mysql \
         mbstring \
         zip \
-        xml
+        xml        
 
 # Composer
 COPY --from=composer:latest /usr/bin/composer /usr/bin/composer
