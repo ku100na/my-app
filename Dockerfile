@@ -53,6 +53,8 @@ RUN composer install \
     --ignore-platform-reqs \
     --no-scripts
 
+RUN php artisan storage:link || true
+
 # Vite build成果物
 COPY --from=node /app/public/build ./public/build
 
