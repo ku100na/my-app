@@ -62,9 +62,9 @@ class TravelPlanSeeder extends Seeder
             $plan = TravelPlan::updateOrCreate(
                 [
                     'title' => $data['title'],
-                    'user_id' => $users->random()->id,
                 ],
                 [
+                    'user_id' => $users->random()->id,
                     'country' => $data['country'],
                     'city' => $data['city'],
                     'start_date' => now()->addDays(rand(1, 10)),
