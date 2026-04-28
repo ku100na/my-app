@@ -39,34 +39,47 @@ class TravelPlanSeeder extends Seeder
 
         foreach ($plans as $data) {
 
-            $plan = TravelPlan::updateOrCreate([
-                'title' => $data['title'],
-                'user_id' => $users->random()->id,
-                'country' => $data['country'],
-                'city' => $data['city'],
-                'start_date' => now()->addDays(rand(1, 10)),
-                'end_date' => now()->addDays(rand(11, 20)),
-                'status' => collect(['planned', 'completed'])->random(),
-                'overview' => '観光とグルメを楽しむ旅行プラン',
-                'is_public' => (bool) rand(0, 1),
-            ]);
-
-            $day = $plan->days()->updateOrCreate([
-                'day_number' => 1,
-                'title' => '観光1日目',
-            ]);
-
-            $day->spots()->updateOrCreate([
-                'name' => '人気観光スポット',
-                'duration' => 90,
-                'review' => 'とても良かったです',
-            ]);
-
-            // ⭐ TravelRecordも追加
-            $plan->travelRecord()->updateOrCreate([
-                'review' => 'とても充実した旅行でした',
-                'cost' => 50000,
-            ]);
+            $plan = TravelPlan::updateOrCreate(
+                [
+                    'title' => $data['title'],
+                    'user_id' => $users->random()->id,
+                ],
+                [
+                    'country' => $data['country'],
+                    'city' => $data['city'],
+                    'start_date' => now()->addDays(rand(1, 10)),
+                    'end_date' => now()->addDays(rand(11, 20)),
+                    'status' => collect(['planned', 'completed'])->random(),
+                    'overview' => '観光とグルメを楽しむ旅行プラン',
+                    'is_public' => (bool) rand(0, 1),
+                ]
+            );
+            $day = $plan->days()->updateOrCreate(
+                [
+                    'day_number' => 1,
+                ],
+                [
+                    'title' => '観光1日目',
+                ]
+            );
+            $day->spots()->updateOrCreate(
+                [
+                    'name' => '人気観光スポット',
+                ],
+                [
+                    'duration' => 90,
+                    'review' => 'とても良かったです',
+                ]
+            );
+            $plan->travelRecord()->updateOrCreate(
+                    [
+                        'id' => $plan->id, 
+                    ],
+                    [
+                        'review' => 'とても充実した旅行でした',
+                        'cost' => 50000,
+                    ]
+            );        
         }
     }
 }
