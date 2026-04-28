@@ -243,7 +243,13 @@ class TravelPlanController extends Controller
             });
 
             $filename = uniqid() . '.' . $file->getClientOriginalExtension();
-            $savePath = storage_path('app/public/photos/' . $filename);
+            
+            $directory = storage_path('app/public/photos');
+            if (!file_exists($directory)) {
+                mkdir($directory, 0775, true);
+            }
+            
+            $savePath = $directory . '/' . $filename;
             $image->save($savePath);
 
             $travelPlan->update([
