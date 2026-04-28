@@ -16,7 +16,7 @@ class TravelPlanSeeder extends Seeder
         $users = User::all();
         $plans = [
             [
-                'title' => '東京2泊3日旅行',
+                'title' => '東京旅行',
                 'country' => '日本',
                 'city' => '東京',
             ],
@@ -34,6 +34,26 @@ class TravelPlanSeeder extends Seeder
                 'title' => '北海道ドライブ旅行',
                 'country' => '日本',
                 'city' => '北海道',
+            ],
+            [
+                'title' => 'アイスランド旅行',
+                'country' => 'アイスランド',
+                'city' => 'レイキャビク、南海岸',
+            ],
+            [
+                'title' => 'ヘルシンキからタリンへ',
+                'country' => 'フィンランド　エストニア',
+                'city' => 'ヘルシンキ　タリン',
+            ],
+            [
+                'title' => '米子訪問',
+                'country' => '日本',
+                'city' => '米子',
+            ],
+            [
+                'title' => '滋賀へ旅行',
+                'country' => '日本',
+                'city' => '滋賀',
             ],
         ];
 
