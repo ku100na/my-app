@@ -38,12 +38,12 @@ class TravelPlanSeeder extends Seeder
             [
                 'title' => 'アイスランド旅行',
                 'country' => 'アイスランド',
-                'city' => 'レイキャビク、南海岸',
+                'city' => 'レイキャビク',
             ],
             [
                 'title' => 'ヘルシンキからタリンへ',
-                'country' => 'フィンランド　エストニア',
-                'city' => 'ヘルシンキ　タリン',
+                'country' => 'エストニア',
+                'city' => 'タリン',
             ],
             [
                 'title' => '米子訪問',
