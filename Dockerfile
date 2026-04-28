@@ -61,6 +61,8 @@ RUN composer install \
 # Vite build成果物
 COPY --from=node /app/public/build ./public/build
 
+RUN php artisan storage:link || true
+
 RUN php artisan optimize:clear || true \
     && php artisan config:clear || true \
     && php artisan cache:clear || true \
